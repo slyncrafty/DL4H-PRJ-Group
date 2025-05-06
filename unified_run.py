@@ -5,9 +5,9 @@ from glob import glob
 import pandas as pd
 import torch ## added
 
-models = {
-    'ckpt/unixgen_lightning.ckpt'
-    : [
+models = {                                               ## Specify Test round settings
+    'ckpt/unixgen_lightning.ckpt'                        ## Specify model checkpoint location
+    : [                                                  ## [under_sample, max_img_num, target_count]
         ['fixed_each_unified', 1, 1],
 
         ['fixed_each_unified', 1, 2],
@@ -22,7 +22,7 @@ models = {
 test_meta_files = ['metadata/mimiccxr_test_filtered.csv'] ## Specify filtered test metadata
 
 round_idx = 0 ## added for tracking
-total_rounds = sum(len(configs) for configs in models.values()) * len(test_meta_files)  ## added for tracking
+total_rounds = sum(len(configs) for configs in models.values()) * len(test_meta_files)                              ## added for tracking
 
 for model_path, configs in models.items():
     for config in configs:

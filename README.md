@@ -76,6 +76,8 @@ DATA_PATH = '/content/drive/MyDrive/UniXGen/data'
 %cd {PRJ_ROOT}
 ```
 
+🔑 Replace file: {PRJ_ROOT}/taming-transformers/taming/data/utils.py with [utils.py](https://drive.google.com/file/d/1NCO8hojet42JdrgX1vKV3uMPpCLBWDw8/view?usp=drive_link)
+
 🔑 Key versions (tested):
 
 | Package / Library              | Version / Source                        |
@@ -118,7 +120,7 @@ DATA_PATH = '/content/drive/MyDrive/UniXGen/data'
 
 🔧 Place model file under **/ckpt**
 
-- (Recommanded) Download [Pre-updated UniXGen Model](https://drive.google.com/file/d/1LuZXq7DpQUV9cgWTLK6SRvlmSHu_a5E1/view?usp=drive_link)
+- (Recommended) Download [Pre-updated UniXGen Model](https://drive.google.com/file/d/1LuZXq7DpQUV9cgWTLK6SRvlmSHu_a5E1/view?usp=drive_link) and Place model file under **/ckpt**
 
 - (Optional) Download [UniXGen model](). This model requires update. See UniXGenOnColab.ipynb (Section Pre-processing - Fix ckpt version for compatibility(Optional))
 
