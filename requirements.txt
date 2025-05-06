@@ -11,5 +11,6 @@ scikit-image==0.21.0
 tqdm==4.66.1
 torchxrayvision==1.2.1
 axial-positional-embedding==0.3.12
+omegaconf==2.2.3
 # jax==0.4.23             # installed separately
 # jaxlib==0.4.23          # installed separately
