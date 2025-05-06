@@ -323,7 +323,7 @@ if __name__ == '__main__':
                          gradient_clip_val=args.gradient_clip_val, profiler="simple",
                          accumulate_grad_batches=args.accumulate_grad_batches,
                          #replace_sampler_ddp=False
-                         limit_test_batches=10, ## 1.0 for 100%, 0.1 for 10%, int for batch counts
+                         limit_test_batches=1.0, ## 1.0 for 100%, 0.1 for 10%, int for batch counts
                          )
 
     print("🚦 Trainer initialized, starting training/testing...", flush=True)
