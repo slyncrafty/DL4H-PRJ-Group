@@ -97,7 +97,9 @@ if __name__ == '__main__':
     parser.add_argument('--sharded_ddp', default=False, type=str2bool, help='fairscale sharded ddp')
 
     parser.add_argument('--random_mode_order', default=True, type=str2bool, help='Use random order for setup_modes()')
-
+    parser.add_argument('--save_dir', default='output', type=str, help='Where to write output .pt')
+    parser.add_argument('--limit_test_batches', default=1.0, type=float, help='Portion (or count) of test‐batches to run: 1.0=all, 0.1=10%, int=that many batches')
+    
     args = parser.parse_args()
 
     print(f"⚙️ Parsed Arguments: {args}", flush=True)
@@ -245,7 +247,7 @@ if __name__ == '__main__':
             pad_token_idx=tokenizer.token_to_id("[PAD]"),
             sos_token_idx=tokenizer.token_to_id("[SOS]"),
             eos_token_idx=tokenizer.token_to_id("[EOS]"),
-            save_dir='output',
+            save_dir=args.save_dir,
             causal_trans=args.causal_clm,
             total_steps=total_steps,
             **kargs_unified,
@@ -258,7 +260,7 @@ if __name__ == '__main__':
         model.target_count         = args.target_count
         model.hparams.target_count = args.target_count  # ensure hyperparameters match
         
-        model.save_dir             = 'output'            # make sure it exists
+        model.save_dir             = args.save_dir            # make sure it exists
         model.transformerLM_unified.max_img_num = args.max_img_num
         model.transformerLM_unified.target_count = args.target_count
         os.makedirs(model.save_dir, exist_ok=True)
@@ -272,7 +274,7 @@ if __name__ == '__main__':
             pad_token_idx=tokenizer.token_to_id("[PAD]"),
             sos_token_idx=tokenizer.token_to_id("[SOS]"),
             eos_token_idx=tokenizer.token_to_id("[EOS]"),
-            save_dir='output',
+            save_dir=args.save_dir,
             causal_trans=args.causal_clm,
             total_steps=total_steps,
             **kargs_unified,
@@ -323,7 +325,7 @@ if __name__ == '__main__':
                          gradient_clip_val=args.gradient_clip_val, profiler="simple",
                          accumulate_grad_batches=args.accumulate_grad_batches,
                          #replace_sampler_ddp=False
-                         limit_test_batches=1.0, ## 1.0 for 100%, 0.1 for 10%, int for batch counts
+                         limit_test_batches=args.limit_test_batches, ## 1.0 for 100%, 0.1 for 10%, int for batch counts
                          )
 
     print("🚦 Trainer initialized, starting training/testing...", flush=True)

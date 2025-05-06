@@ -68,15 +68,31 @@ DATA_PATH = '/content/drive/MyDrive/UniXGen/data'
 %pip install --upgrade jax==0.4.23 jaxlib==0.4.23
 ```
 
-```external source
+```install taming-transformers and patch utils.py
 %cd {PRJ_ROOT}
 !git clone https://github.com/CompVis/taming-transformers.git
 %cd taming-transformers
 !pip install -e .
 %cd {PRJ_ROOT}
-```
 
-🔑 Replace file: {PRJ_ROOT}/taming-transformers/taming/data/utils.py with [utils.py](https://drive.google.com/file/d/1NCO8hojet42JdrgX1vKV3uMPpCLBWDw8/view?usp=drive_link)
+# utils.py dependency fix patch
+from pathlib import Path
+
+file = Path("taming-transformers/taming/data/utils.py")
+lines = file.read_text().splitlines()
+out = []
+for L in lines:
+    # drop the unwanted line
+    if "from torch._six import string_classes" in L:
+        continue
+    out.append(L)
+    # after the Annotation import, insert our new line
+    if L.strip().startswith("from taming.data.helper_types import Annotation"):
+        out.append("string_classes = (str,)  # added for dependency fix")
+
+file.write_text("\n".join(out) + "\n")
+print("Patched utils.py")
+```
 
 🔑 Key versions (tested):
 
