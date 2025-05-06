@@ -34,6 +34,8 @@ View-Specific Chest X-ray Generation](https://arxiv.org/pdf/2302.12172)
 
 ## Set up & Requirements
 
+🔑 Example Setup: [UniXGenOnColab.ipynb](https://github.com/slyncrafty/DL4H-PRJ-Group/blob/main/UniXGenOnColab.ipynb)
+
 🔑 Clone this repo:
 
 ```clone git
