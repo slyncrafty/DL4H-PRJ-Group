@@ -7,8 +7,9 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 
-import sys
-sys.path.append('/content/drive/MyDrive/UniXGen/taming-transformers')
+import os, sys
+ROOT = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.join(ROOT, 'taming-transformers'))
 from taming.models.vqgan import GumbelVQ
 
 # helper
