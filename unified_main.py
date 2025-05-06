@@ -38,7 +38,7 @@ if __name__ == '__main__':
     parser.add_argument('--weight_decay', default=1e-6, type=float, help='weight decay')
 
     parser.add_argument('--img_root_dir', default='data/images', type=str)
-    parser.add_argument('--text_root_dir', default='data/reports_', type=str)
+    parser.add_argument('--text_root_dir', default='data/reports', type=str)
     parser.add_argument('--train_meta_file', default='metadata/mimiccxr_train_sub_final.csv', type=str)
     parser.add_argument('--val_meta_file', default='metadata/mimiccxr_validate_sub_final.csv', type=str)
     parser.add_argument('--test_meta_file', default='metadata/mimiccxr_test_sub_final.csv', type=str)
