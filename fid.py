@@ -45,9 +45,9 @@ class ImagePathDataset(torch.utils.data.Dataset):
             lambda x: torch.from_numpy(x)
         ])(img)
 
-def get_activations(files, model, bs, dims, device, nw):
+def get_activations(files, model, batch_size, dims, device, num_workers):
     ds = ImagePathDataset(files)
-    dl = torch.utils.data.DataLoader(ds, batch_size=bs, num_workers=nw, shuffle=False)
+    dl = torch.utils.data.DataLoader(ds, batch_size=batch_size, num_workers=num_workers, shuffle=False)
     feats = np.empty((len(files), dims), dtype=np.float32)
     idx = 0
     model.eval()
@@ -62,9 +62,17 @@ def get_activations(files, model, bs, dims, device, nw):
             idx += out.shape[0]
     return feats
 
-def calc_stats(files, model, bs, dims, device, nw):
-    act = get_activations(files, model, bs, dims, device, nw)
-    return act.mean(axis=0), np.cov(act, rowvar=False)
+def calc_stats(files, model, batch_size, dims, device, num_workers):
+    act = get_activations(files, model, batch_size, dims, device, num_workers)
+    mu = act.mean(axis=0)
+    # if we have at least two samples, np.cov returns a (dims×dims) matrix;
+    # if we only have one sample, np.cov returns a scalar 0.0, which breaks sqrtm.
+    if act.shape[0] > 1:
+        sigma = np.cov(act, rowvar=False)
+    else:
+        # zero covariance matrix
+        sigma = np.zeros((dims, dims), dtype=np.float64)
+    return mu, sigma 
 
 def frechet(mu1, s1, mu2, s2, eps=1e-6):
     diff = mu1 - mu2
@@ -76,10 +84,10 @@ def frechet(mu1, s1, mu2, s2, eps=1e-6):
         covmean = covmean.real
     return diff.dot(diff) + np.trace(s1) + np.trace(s2) - 2*np.trace(covmean)
 
-def calc_fid(gt_files, gen_files, bs, device, dims, nw):
+def calc_fid(gt_files, gen_files, batch_size, device, dims, num_workers):
     model = xrv.models.DenseNet(weights="densenet121-res224-all").to(device)
-    mu1, s1 = calc_stats(gt_files, model, bs, dims, device, nw)
-    mu2, s2 = calc_stats(gen_files, model, bs, dims, device, nw)
+    mu1, s1 = calc_stats(gt_files, model, batch_size, dims, device, num_workers)
+    mu2, s2 = calc_stats(gen_files, model, batch_size, dims, device, num_workers)
     return frechet(mu1, s1, mu2, s2)
 
 # ─── Process one folder ─────────────────────────────────────────────────────
